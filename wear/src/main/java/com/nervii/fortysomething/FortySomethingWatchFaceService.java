@@ -1,26 +1,15 @@
 package com.nervii.fortysomething;
 
 import android.content.res.Resources;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.text.TextUtils;
 import android.text.format.DateUtils;
-import android.text.format.Time;
 import android.view.SurfaceHolder;
 import android.view.WindowInsets;
 
 import com.google.android.gms.wearable.DataMap;
-import com.nervii.fortysomething.BuildConfig;
-import com.nervii.fortysomething.R;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Locale;
 
 public class FortySomethingWatchFaceService extends WeatherWatchFaceService {
     @Override
@@ -29,20 +18,11 @@ public class FortySomethingWatchFaceService extends WeatherWatchFaceService {
     }
 
     private class Engine extends WeatherWatchFaceEngine {
-        protected float mColonXOffset;
-        protected float mDateSuffixYOffset;
-        protected float mDateYOffset;
         protected float mDebugInfoYOffset;
-        protected float mInternalDistance;
-        protected float mTemperatureSuffixYOffset;
-        protected float mTemperatureYOffset;
-        protected float mTimeXOffset;
-        protected float mTimeYOffset;
         Paint mTextPaintHour, mTextPaintMinute, mTextPaintSecond,
                 mTextPaintColon, mTextPaintDate, mTextPaintTemperature,
                 mTextPaintTemperatureScale;
         float mXOffset;
-        float mYOffset;
 
         private Engine() {
             super("FortySomething");
@@ -73,9 +53,9 @@ public class FortySomethingWatchFaceService extends WeatherWatchFaceService {
             mTextPaintDate = new Paint();
             mTextPaintDate = createTextPaint(resources.getColor(R.color.digital_text_grey), dateFont);
             mTextPaintTemperature = new Paint();
-            mTextPaintTemperature = createTextPaint(resources.getColor(R.color.digital_text_grey), dateFont);
+            mTextPaintTemperature = createTextPaint(resources.getColor(R.color.digital_text_grey), tempFont);
             mTextPaintTemperatureScale = new Paint();
-            mTextPaintTemperatureScale = createTextPaint(resources.getColor(R.color.digital_text_grey), dateFont);
+            mTextPaintTemperatureScale = createTextPaint(resources.getColor(R.color.digital_text_grey), tempFont);
 
         }
 
@@ -149,19 +129,8 @@ public class FortySomethingWatchFaceService extends WeatherWatchFaceService {
             boolean hasPeekCard = getPeekCardPosition().top != 0;
             int width = bounds.width();
             int height = bounds.height();
-            float radius = width / 2;
-            float yOffset;
-            if (hasPeekCard) {
-                yOffset = height * 0.05f;
-            } else {
-                yOffset = 0;
-            }
 
             canvas.drawRect(0, 0, width, height, mBackgroundPaint);
-
-            // Time
-            String hourString = String.format("%02d", ConverterUtil.convertHour(mTime.hour, mTimeUnit));
-            String minString = String.format("%02d", mTime.minute);
 
             //For Test
 //            hourString = "11";
@@ -212,8 +181,9 @@ public class FortySomethingWatchFaceService extends WeatherWatchFaceService {
                 canvas.drawText(second, xPos + hourWidth + colonWidth + minuteWidth, (canvas.getHeight() / 2), mTextPaintSecond);
 
                 // temperature
-                mTemperature = 32;
-                boolean showTemperature = true; //(timeSpan <= WEATHER_INFO_TIME_OUT);
+                //mTemperature = 32;
+                //mWeatherCondition = "Rainy";
+                boolean showTemperature =(timeSpan <= WEATHER_INFO_TIME_OUT);
                 if (mTemperature != Integer.MAX_VALUE && showTemperature) {
                     /*
                     if ((mWeatherCondition.equals("cloudy") || mWeatherCondition.equals("clear")) && (Time.compare(mTime, mSunriseTime) < 0 || Time.compare(mTime, mSunsetTime) > 0)) {
@@ -225,7 +195,7 @@ public class FortySomethingWatchFaceService extends WeatherWatchFaceService {
                     }
                     */
                     if (!(isRound && hasPeekCard)) {
-                        String temperatureString = String.valueOf(mTemperature);
+                        String temperatureString = mWeatherCondition + ", " + String.valueOf(mTemperature);
                         String temperatureScaleString = mTemperatureScale == ConverterUtil.FAHRENHEIT ? ConverterUtil.FAHRENHEIT_STRING : ConverterUtil.CELSIUS_STRING;
 
                         // Align temperature scale to top of temperature
@@ -244,7 +214,7 @@ public class FortySomethingWatchFaceService extends WeatherWatchFaceService {
                     }
                 }
             }
-
+            /*
             if (BuildConfig.DEBUG) {
                 String timeString;
                 if (mWeatherInfoReceivedTime == 0) {
@@ -259,6 +229,7 @@ public class FortySomethingWatchFaceService extends WeatherWatchFaceService {
 
                 canvas.drawText(timeString, width - mDebugInfoPaint.measureText(timeString), mDebugInfoYOffset, mDebugInfoPaint);
             }
+            */
         }
     }
 }

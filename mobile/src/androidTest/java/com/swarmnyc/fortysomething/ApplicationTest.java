@@ -1,4 +1,4 @@
-package com.swarmnyc.fortysomething;
+package com.nervii.fortysomething;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

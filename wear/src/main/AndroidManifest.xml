@@ -31,7 +31,7 @@
                 android:resource="@drawable/preview_weather_runner" />
             <meta-data
                 android:name="com.google.android.wearable.watchface.companionConfigurationAction"
-                android:value="com.swarmnyc.watchfaces.CONFIG_RUNNER" />
+                android:value="com.nervii.fortysomething.CONFIG_RUNNER" />
             <intent-filter>
                 <action android:name="android.service.wallpaper.WallpaperService" />
                 <category android:name="com.google.android.wearable.watchface.category.WATCH_FACE" />

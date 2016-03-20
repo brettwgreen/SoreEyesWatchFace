@@ -33,7 +33,7 @@ android {
 }
 
 project.tasks.withType(JavaCompile) { task ->
-    options.compilerArgs << "-AguiceAnnotationDatabasePackageName=com.swarmnyc.watchfaces"
+    options.compilerArgs << "-AguiceAnnotationDatabasePackageName=com.nervii.fortysomething"
 }
 
 dependencies {

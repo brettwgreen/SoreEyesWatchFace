@@ -1,4 +1,4 @@
-package com.swarmnyc.fortysomething;
+package com.nervii.fortysomething;
 
 import com.google.inject.AbstractModule;
 import com.nervii.fortysomething.weather.IWeatherApi;
