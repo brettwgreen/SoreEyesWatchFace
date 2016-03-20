@@ -1,4 +1,4 @@
-package com.swarmnyc.watchfaces;
+package com.nervii.fortysomething;
 
 
 import android.content.Context;
@@ -18,9 +18,8 @@ import com.google.android.gms.wearable.MessageEvent;
 import com.google.android.gms.wearable.Wearable;
 import com.google.android.gms.wearable.WearableListenerService;
 import com.google.inject.Inject;
-import com.swarmnyc.watchfaces.weather.IWeatherApi;
-import com.swarmnyc.watchfaces.weather.WeatherInfo;
-import com.swarmnyc.watchfaces.weather.openweather.OpenWeatherApi;
+import com.nervii.fortysomething.weather.IWeatherApi;
+import com.nervii.fortysomething.weather.WeatherInfo;
 
 import roboguice.RoboGuice;
 

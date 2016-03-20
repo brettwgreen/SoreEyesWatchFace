@@ -1,4 +1,4 @@
-package com.swarmnyc.watchfaces;
+package com.nervii.fortysomething;
 
 public class Consts {
     public static final String KEY_CONFIG_REQUIRE_INTERVAL = "RequireInterval";

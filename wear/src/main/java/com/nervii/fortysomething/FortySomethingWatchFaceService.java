@@ -1,4 +1,4 @@
-package com.swarmnyc.watchfaces;
+package com.nervii.fortysomething;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -14,8 +14,10 @@ import android.view.SurfaceHolder;
 import android.view.WindowInsets;
 
 import com.google.android.gms.wearable.DataMap;
+import com.nervii.fortysomething.BuildConfig;
+import com.nervii.fortysomething.R;
 
-public class RunnerWeatherWatchFaceService extends WeatherWatchFaceService {
+public class FortySomethingWatchFaceService extends WeatherWatchFaceService {
     @Override
     public Engine onCreateEngine() {
         return new Engine();

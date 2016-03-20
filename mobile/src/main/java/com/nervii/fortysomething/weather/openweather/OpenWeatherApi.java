@@ -1,4 +1,4 @@
-package com.swarmnyc.watchfaces.weather.openweather;
+package com.nervii.fortysomething.weather.openweather;
 
 
 import android.content.Context;
@@ -7,9 +7,9 @@ import android.util.Log;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
-import com.swarmnyc.watchfaces.R;
-import com.swarmnyc.watchfaces.weather.IWeatherApi;
-import com.swarmnyc.watchfaces.weather.WeatherInfo;
+import com.nervii.fortysomething.R;
+import com.nervii.fortysomething.weather.IWeatherApi;
+import com.nervii.fortysomething.weather.WeatherInfo;
 
 import java.net.URL;
 

@@ -1,4 +1,4 @@
-package com.swarmnyc.watchfaces.weather.openweather;
+package com.nervii.fortysomething.weather.openweather;
 
 public class OpenWeatherQueryResult {
 // ------------------------------ FIELDS ------------------------------

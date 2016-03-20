@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.swarmnyc.watchfaces" >
+    package="com.nervii.fortysomething" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -16,29 +16,29 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
 
-        <service android:name=".WeatherService" >
+        <service android:name="com.nervii.fortysomething.WeatherService" >
             <intent-filter>
                 <action android:name="com.google.android.gms.wearable.BIND_LISTENER" />
             </intent-filter>
         </service>
 
         <activity
-            android:name=".WeatherWatchFaceConfigActivity"
+            android:name="com.nervii.fortysomething.WeatherWatchFaceConfigActivity"
             android:label="@string/title_activity_weather_watch_face_config"
             android:theme="@style/ConfigTheme">
             <intent-filter>
-                <action android:name="com.swarmnyc.watchfaces.CONFIG_RUNNER" />
+                <action android:name="com.nervii.fortysomething.CONFIG_RUNNER" />
                 <category android:name="com.google.android.wearable.watchface.category.COMPANION_CONFIGURATION" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
             <intent-filter>
-                <action android:name="com.swarmnyc.watchfaces.CONFIG_SLIM" />
+                <action android:name="com.nervii.fortysomething.CONFIG_SLIM" />
                 <category android:name="com.google.android.wearable.watchface.category.COMPANION_CONFIGURATION" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 
-        <meta-data android:name="roboguice.annotations.packages" android:value="com.swarmnyc.watchfaces" />
-        <meta-data android:name="roboguice.modules" android:value="com.swarmnyc.watchfaces.AppModule" />
+        <meta-data android:name="roboguice.annotations.packages" android:value="com.nervii.fortysomething" />
+        <meta-data android:name="roboguice.modules" android:value="com.nervii.fortysomething.AppModule" />
     </application>
 </manifest>

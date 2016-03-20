@@ -1,4 +1,4 @@
-package com.swarmnyc.watchfaces;
+package com.nervii.fortysomething;
 
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;

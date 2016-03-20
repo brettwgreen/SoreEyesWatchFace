@@ -1,4 +1,4 @@
-package com.swarmnyc.watchfaces.weather;
+package com.nervii.fortysomething.weather;
 
 public class WeatherInfo {
 // ------------------------------ FIELDS ------------------------------

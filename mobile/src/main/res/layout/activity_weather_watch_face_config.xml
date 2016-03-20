@@ -9,7 +9,7 @@
     android:id="@+id/container"
     android:visibility="invisible"
     tools:visibility="visible"
-    tools:context="com.swarmnyc.watchfaces.WeatherWatchFaceConfigActivity">
+    tools:context="com.nervii.fortysomething.WeatherWatchFaceConfigActivity">
 
     <LinearLayout
         android:orientation="vertical"

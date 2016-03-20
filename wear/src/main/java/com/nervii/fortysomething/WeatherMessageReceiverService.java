@@ -1,4 +1,4 @@
-package com.swarmnyc.watchfaces;
+package com.nervii.fortysomething;
 
 
 import android.net.Uri;
@@ -12,7 +12,6 @@ import com.google.android.gms.wearable.DataMapItem;
 import com.google.android.gms.wearable.MessageEvent;
 import com.google.android.gms.wearable.NodeApi;
 import com.google.android.gms.wearable.PutDataMapRequest;
-import com.google.android.gms.wearable.PutDataRequest;
 import com.google.android.gms.wearable.Wearable;
 import com.google.android.gms.wearable.WearableListenerService;
 

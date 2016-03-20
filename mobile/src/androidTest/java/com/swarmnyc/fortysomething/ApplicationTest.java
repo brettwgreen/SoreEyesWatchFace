@@ -1,4 +1,4 @@
-package com.swarmnyc.watchfaces;
+package com.swarmnyc.fortysomething;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

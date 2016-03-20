@@ -1,4 +1,4 @@
-package com.swarmnyc.watchfaces;
+package com.nervii.fortysomething;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -35,9 +35,9 @@ import com.google.android.gms.wearable.MessageApi;
 import com.google.android.gms.wearable.Node;
 import com.google.android.gms.wearable.NodeApi;
 import com.google.android.gms.wearable.Wearable;
+import com.nervii.fortysomething.R;
 
 import java.util.TimeZone;
-import java.util.concurrent.TimeUnit;
 
 public abstract class WeatherWatchFaceService extends CanvasWatchFaceService {
     public class WeatherWatchFaceEngine extends CanvasWatchFaceService.Engine

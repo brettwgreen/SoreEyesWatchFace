@@ -6,7 +6,7 @@ android {
     buildToolsVersion "23.0.2"
 
     defaultConfig {
-        applicationId "com.swarmnyc.watchfaces"
+        applicationId "com.nervii.fortysomething"
         minSdkVersion 21
         targetSdkVersion 21
         versionCode 1
