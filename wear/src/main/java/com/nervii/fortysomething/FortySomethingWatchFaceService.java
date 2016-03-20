@@ -1,5 +1,6 @@
 package com.nervii.fortysomething;
 
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -17,6 +18,10 @@ import com.google.android.gms.wearable.DataMap;
 import com.nervii.fortysomething.BuildConfig;
 import com.nervii.fortysomething.R;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+
 public class FortySomethingWatchFaceService extends WeatherWatchFaceService {
     @Override
     public Engine onCreateEngine() {
@@ -33,6 +38,11 @@ public class FortySomethingWatchFaceService extends WeatherWatchFaceService {
         protected float mTemperatureYOffset;
         protected float mTimeXOffset;
         protected float mTimeYOffset;
+        Paint mTextPaintHour, mTextPaintMinute, mTextPaintSecond,
+                mTextPaintColon, mTextPaintDate, mTextPaintTemperature,
+                mTextPaintTemperatureScale;
+        float mXOffset;
+        float mYOffset;
 
         private Engine() {
             super("FortySomething");
@@ -46,67 +56,52 @@ public class FortySomethingWatchFaceService extends WeatherWatchFaceService {
             mBackgroundColor = mBackgroundDefaultColor = mResources.getColor(R.color.fortysomething_bg_color);
             mBackgroundPaint = new Paint();
             mBackgroundPaint.setColor(mBackgroundDefaultColor);
-
-            mTemperatureBorderPaint = new Paint();
-            mTemperatureBorderPaint.setStyle(Paint.Style.STROKE);
-            mTemperatureBorderPaint.setColor(mResources.getColor(R.color.fortysomething_temperature_border_color));
-            mTemperatureBorderPaint.setStrokeWidth(3f);
-            mTemperatureBorderPaint.setAntiAlias(true);
+            Resources resources = FortySomethingWatchFaceService.this.getResources();
 
             Typeface timeFont = Typeface.createFromAsset(mAsserts, mResources.getString(R.string.fortysomething_time_font));
             Typeface dateFont = Typeface.createFromAsset(mAsserts, mResources.getString(R.string.fortysomething_date_font));
             Typeface tempFont = Typeface.createFromAsset(mAsserts, mResources.getString(R.string.fortysomething_temperature_font));
 
-            mTimePaint = createTextPaint(mResources.getColor(R.color.fortysomething_time_color), timeFont);
-            mDatePaint = createTextPaint(mResources.getColor(R.color.fortysomething_date_color), dateFont);
-            mDateSuffixPaint = createTextPaint(mResources.getColor(R.color.fortysomething_date_color), dateFont);
-            mTemperaturePaint = createTextPaint(mResources.getColor(R.color.fortysomething_temperature_color), tempFont);
-            mTemperatureSuffixPaint = createTextPaint(mResources.getColor(R.color.fortysomething_temperature_color), tempFont);
+            mTextPaintHour = new Paint();
+            mTextPaintHour = createTextPaint(resources.getColor(R.color.digital_text), timeFont);
+            mTextPaintMinute = new Paint();
+            mTextPaintMinute = createTextPaint(resources.getColor(R.color.digital_text_grey), timeFont);
+            mTextPaintSecond = new Paint();
+            mTextPaintSecond = createTextPaint(resources.getColor(R.color.digital_text_dark_grey), timeFont);
+            mTextPaintColon = new Paint();
+            mTextPaintColon = createTextPaint(resources.getColor(R.color.digital_text_grey), timeFont);
+            mTextPaintDate = new Paint();
+            mTextPaintDate = createTextPaint(resources.getColor(R.color.digital_text_grey), dateFont);
+            mTextPaintTemperature = new Paint();
+            mTextPaintTemperature = createTextPaint(resources.getColor(R.color.digital_text_grey), dateFont);
+            mTextPaintTemperatureScale = new Paint();
+            mTextPaintTemperatureScale = createTextPaint(resources.getColor(R.color.digital_text_grey), dateFont);
+
         }
 
         @Override
         public void onApplyWindowInsets(WindowInsets insets) {
             super.onApplyWindowInsets(insets);
 
-            // Load resources that have alternate values for round watches.
-            isRound = insets.isRound();
+            Resources resources = FortySomethingWatchFaceService.this.getResources();
+            boolean isRound = insets.isRound();
+            mXOffset = resources.getDimension(isRound
+                    ? R.dimen.digital_x_offset_round : R.dimen.digital_x_offset);
+            float textSize = resources.getDimension(isRound
+                    ? R.dimen.digital_text_size_round : R.dimen.digital_text_size);
+            float textSizeMedium = resources.getDimension(isRound
+                    ? R.dimen.digital_text_size_round_medium : R.dimen.digital_text_size_medium);
+            float textSizeSmall = resources.getDimension(isRound
+                    ? R.dimen.digital_text_size_round_small : R.dimen.digital_text_size_small);
 
-            mInternalDistance = mResources.getDimension(isRound ?
-                    R.dimen.fortysomething_internal_distance_round : R.dimen.fortysomething_internal_distance);
+            mTextPaintHour.setTextSize(textSize);
+            mTextPaintMinute.setTextSize(textSize);
+            mTextPaintSecond.setTextSize(textSizeMedium);
+            mTextPaintDate.setTextSize(textSizeSmall);
+            mTextPaintColon.setTextSize(textSize);
+            mTextPaintTemperature.setTextSize(textSizeMedium);
+            mTextPaintTemperatureScale.setTextSize(textSizeSmall);
 
-            mTimeXOffset = mResources.getInteger(isRound ?
-                    R.integer.fortysomething_time_xoffset_round : R.integer.fortysomething_time_xoffset);
-
-            mTimeYOffset = mResources.getInteger(isRound ?
-                    R.integer.fortysomething_time_yoffset_round : R.integer.fortysomething_time_yoffset);
-
-            float timeTextSize = mResources.getDimension(isRound ?
-                    R.dimen.fortysomething_time_size_round : R.dimen.fortysomething_time_size);
-
-            float dateTextSize = mResources.getDimension(isRound ?
-                    R.dimen.fortysomething_date_size_round : R.dimen.fortysomething_date_size);
-
-            float dateSuffixTextSize = mResources.getDimension(isRound ?
-                    R.dimen.fortysomething_date_suffix_size_round : R.dimen.fortysomething_date_suffix_size);
-
-            float tempTextSize = mResources.getDimension(isRound ?
-                    R.dimen.fortysomething_temperature_size_round : R.dimen.fortysomething_temperature_size);
-
-            float tempSuffixTextSize = mResources.getDimension(isRound ?
-                    R.dimen.fortysomething_temperature_suffix_size_round : R.dimen.fortysomething_temperature_suffix_size);
-
-            mTimePaint.setTextSize(timeTextSize);
-            mDatePaint.setTextSize(dateTextSize);
-            mDateSuffixPaint.setTextSize(dateSuffixTextSize);
-            mTemperaturePaint.setTextSize(tempTextSize);
-            mTemperatureSuffixPaint.setTextSize(tempSuffixTextSize);
-
-            mTimeYOffset += (mTimePaint.descent() + mTimePaint.ascent()) / 2;
-            mColonXOffset = mTimePaint.measureText(Consts.COLON_STRING) / 2;
-            mDateYOffset = (mDatePaint.descent() + mDatePaint.ascent()) / 2;
-            mDateSuffixYOffset = (mDateSuffixPaint.descent() + mDateSuffixPaint.ascent()) / 2;
-            mTemperatureYOffset = (mTemperaturePaint.descent() + mTemperaturePaint.ascent()) / 2;
-            mTemperatureSuffixYOffset = (mTemperatureSuffixPaint.descent() + mTemperatureSuffixPaint.ascent()) / 2;
             mDebugInfoYOffset = 5 + mDebugInfoPaint.getTextSize() + (mDebugInfoPaint.descent() + mDebugInfoPaint.ascent()) / 2;
         }
 
@@ -117,9 +112,9 @@ public class FortySomethingWatchFaceService extends WeatherWatchFaceService {
 
             if (mLowBitAmbient) {
                 boolean antiAlias = !inAmbientMode;
-                mTimePaint.setAntiAlias(antiAlias);
-                mDatePaint.setAntiAlias(antiAlias);
-                mTemperaturePaint.setAntiAlias(antiAlias);
+                mTextPaintHour.setAntiAlias(!inAmbientMode);
+                mTextPaintMinute.setAntiAlias(!inAmbientMode);
+                mTextPaintSecond.setAntiAlias(!inAmbientMode);
             }
 
             if (inAmbientMode) {
@@ -177,52 +172,48 @@ public class FortySomethingWatchFaceService extends WeatherWatchFaceService {
 //            mSunriseTime.set(mWeatherInfoReceivedTime-10000);
 //            mSunsetTime.set(mWeatherInfoReceivedTime+10000);
 
-            float hourWidth = mTimePaint.measureText(hourString);
+            String hour = String.format("%02d", mTime.hour);
+            String minute = String.format("%02d", mTime.minute);
+            String second = String.format("%02d", mTime.second);
+            String colon = ":";
 
-            float x = radius - hourWidth - mColonXOffset + mTimeXOffset;
-            float y = radius - mTimeYOffset - yOffset;
-            float suffixY;
+            String day = ConverterUtil.getDayName(mTime.weekDay);
+            String month = ConverterUtil.convertToMonth(mTime.month);
+            String date = String.valueOf(mTime.monthDay);
+            String dateString = day + ", " + month + " " + date;
 
-            canvas.drawText(hourString, x, y, mTimePaint);
+            float hourWidth = mTextPaintHour.measureText(hour);
+            float minuteWidth = mTextPaintHour.measureText(minute);
+            float colonWidth = mTextPaintHour.measureText(colon);
+            int center_horizontal = (canvas.getWidth() / 2);
+            int xPos = Math.round((canvas.getWidth() - (hourWidth + colonWidth + minuteWidth)) / 2);
+            Rect r = new Rect();
+            mTextPaintHour.getTextBounds(hour, 0, hour.length(), r);
+            int yPos = (int) ((canvas.getHeight() / 2) - ((mTextPaintHour.descent() + mTextPaintHour.ascent()) / 2));
+            yPos -= ((r.height())) / 2;
+            yPos += 20;
+            mTextPaintHour.setTextAlign(Paint.Align.LEFT);
+            mTextPaintMinute.setTextAlign(Paint.Align.LEFT);
+            mTextPaintSecond.setTextAlign(Paint.Align.LEFT);
+            mTextPaintDate.setTextAlign(Paint.Align.CENTER);
 
-            x = radius - mColonXOffset + mTimeXOffset;
-            canvas.drawText(Consts.COLON_STRING, x, y, mTimePaint);
+            mTextPaintTemperature.setTextAlign(Paint.Align.LEFT);
+            mTextPaintTemperatureScale.setTextAlign(Paint.Align.LEFT);
 
-            x = radius + mColonXOffset + mTimeXOffset;
-            canvas.drawText(minString, x, y, mTimePaint);
 
-            suffixY = y + mDateSuffixPaint.getTextSize() +
-                    mInternalDistance +
-                    mDateSuffixYOffset;
+            // Draw H:MM in ambient mode or H:MM:SS in interactive mode.
+            canvas.drawText(hour, xPos, yPos, mTextPaintHour);
+            canvas.drawText(colon, xPos + hourWidth, yPos, mTextPaintColon);
+            canvas.drawText(minute, xPos + hourWidth + colonWidth, yPos, mTextPaintMinute);
+            canvas.drawText(dateString, center_horizontal, (canvas.getHeight() / 2) - 45, mTextPaintDate);
 
-            y += mDatePaint.getTextSize() + mInternalDistance + mDateYOffset;
-
-            //Date
-            String monthString = ConverterUtil.convertToMonth(mTime.month);
-            String dayString = String.valueOf(mTime.monthDay);
-            String daySuffixString = ConverterUtil.getDaySuffix(mTime.monthDay % 10);
-
-            float monthWidth = mDatePaint.measureText(monthString);
-            float dayWidth = mDatePaint.measureText(dayString);
-            float dateWidth = monthWidth + dayWidth +
-                    mDateSuffixPaint.measureText(daySuffixString);
-
-            x = radius - dateWidth / 2;
-            canvas.drawText(monthString, x, y, mDatePaint);
-            x += monthWidth;
-            canvas.drawText(dayString, x, y, mDatePaint);
-            x += dayWidth;
-            canvas.drawText(daySuffixString, x, suffixY, mDateSuffixPaint);
-
-            //WeatherInfo
             long timeSpan = System.currentTimeMillis() - mWeatherInfoReceivedTime;
-            if (timeSpan <= WEATHER_INFO_TIME_OUT) {
-                // photo
-                if (!TextUtils.isEmpty(mWeatherCondition)) {
-                    StringBuilder stringBuilder = new StringBuilder();
-                    stringBuilder.append("weather_");
-                    stringBuilder.append(mWeatherCondition);
+            if (!this.isInAmbientMode()) {
+                canvas.drawText(second, xPos + hourWidth + colonWidth + minuteWidth, (canvas.getHeight() / 2), mTextPaintSecond);
 
+                // temperature
+                if (mTemperature != Integer.MAX_VALUE && timeSpan <= WEATHER_INFO_TIME_OUT) {
+                    /*
                     if ((mWeatherCondition.equals("cloudy") || mWeatherCondition.equals("clear")) && (Time.compare(mTime, mSunriseTime) < 0 || Time.compare(mTime, mSunsetTime) > 0)) {
                         //cloudy and clear have night picture
                         stringBuilder.append("night");
@@ -230,47 +221,27 @@ public class FortySomethingWatchFaceService extends WeatherWatchFaceService {
                     if (this.isInAmbientMode()) {
                         stringBuilder.append("_gray");
                     }
+                    */
+                    if (!(isRound && hasPeekCard)) {
+                        String temperatureString = String.valueOf(mTemperature);
+                        String temperatureScaleString = mTemperatureScale == ConverterUtil.FAHRENHEIT ? ConverterUtil.FAHRENHEIT_STRING : ConverterUtil.CELSIUS_STRING;
 
-                    String name = stringBuilder.toString();
-                    if (!name.equals(mWeatherConditionResourceName)) {
-                        log("CreateScaledBitmap: " + name);
-                        mWeatherConditionResourceName = name;
-                        int id = mResources.getIdentifier(name, "drawable", Consts.PACKAGE_NAME);
+                        // Align temperature scale to top of temperature
+                        Rect r2 = new Rect();
+                        mTextPaintTemperature.getTextBounds(temperatureString, 0, temperatureString.length(), r2);
+                        Rect r3 = new Rect();
+                        mTextPaintTemperatureScale.getTextBounds(temperatureScaleString, 0, temperatureScaleString.length(), r3);
+                        int yPosDelta = r2.height() - r3.height();
 
-                        Drawable b = mResources.getDrawable(id);
-                        mWeatherConditionDrawable = ((BitmapDrawable) b).getBitmap();
-                        float sizeScale = (width * 0.5f) / mWeatherConditionDrawable.getWidth();
-                        mWeatherConditionDrawable = Bitmap.createScaledBitmap(mWeatherConditionDrawable, (int) (mWeatherConditionDrawable.getWidth() * sizeScale), (int) (mWeatherConditionDrawable.getHeight() * sizeScale), true);
+                        float tempWidth = mTextPaintTemperature.measureText(temperatureString);
+                        float scaleWidth = mTextPaintTemperatureScale.measureText(temperatureScaleString);
+
+                        int tempPos = Math.round((canvas.getWidth() - (tempWidth + scaleWidth)) / 2);
+                        canvas.drawText(temperatureString, tempPos, yPos + 45, mTextPaintTemperature);
+                        canvas.drawText(temperatureScaleString, tempPos + tempWidth, yPos + 45 - yPosDelta, mTextPaintTemperatureScale);
                     }
-
-                    canvas.drawBitmap(mWeatherConditionDrawable, radius - mWeatherConditionDrawable.getWidth() / 2, 0 - yOffset, null);
-                }
-
-                //temperature
-                if (mTemperature != Integer.MAX_VALUE && !(isRound && hasPeekCard)) {
-                    String temperatureString = String.valueOf(mTemperature);
-                    String temperatureScaleString = mTemperatureScale == ConverterUtil.FAHRENHEIT ? ConverterUtil.FAHRENHEIT_STRING : ConverterUtil.CELSIUS_STRING;
-                    float temperatureWidth = mTemperaturePaint.measureText(temperatureString);
-                    float temperatureRadius = (temperatureWidth + mTemperatureSuffixPaint.measureText(temperatureScaleString)) / 2;
-                    float borderPadding = temperatureRadius * 0.5f;
-                    x = radius;
-                    if (hasPeekCard) {
-                        y = getPeekCardPosition().top - temperatureRadius - borderPadding - mTemperatureBorderPaint.getStrokeWidth() * 2;
-                    } else {
-                        y = bounds.height() * 0.80f;
-                    }
-
-                    suffixY = y - mTemperatureSuffixYOffset;
-                    canvas.drawCircle(radius, y + borderPadding / 2, temperatureRadius + borderPadding, mTemperatureBorderPaint);
-
-                    x -= temperatureRadius;
-                    y -= mTemperatureYOffset;
-                    canvas.drawText(temperatureString, x, y, mTemperaturePaint);
-                    x += temperatureWidth;
-                    canvas.drawText(temperatureScaleString, x, suffixY, mTemperatureSuffixPaint);
                 }
             }
-
 
             if (BuildConfig.DEBUG) {
                 String timeString;

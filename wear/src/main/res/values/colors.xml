@@ -15,5 +15,8 @@
     <color name="fortysomething_theme_7_bg">#f4ae11</color>
     <color name="fortysomething_theme_8_bg">#e7166f</color>
 
+    <color name="digital_text">#ffffff</color>
+    <color name="digital_text_grey">#999999</color>
+    <color name="digital_text_dark_grey">#555555</color>
 
 </resources>

@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">FortySomething Watchface</string>
-    <string name="fortysomething_time_font">fonts/Chunkfive.otf</string>
-    <string name="fortysomething_date_font">fonts/Chunkfive.otf</string>
-    <string name="fortysomething_temperature_font">fonts/Chunkfive.otf</string>
+    <string name="fortysomething_time_font">fonts/digital-7.ttf</string>
+    <string name="fortysomething_date_font">fonts/digital-7.ttf</string>
+    <string name="fortysomething_temperature_font">fonts/digital-7.ttf</string>
 
     <string name="name_WeatherWatchFace">FortySomething</string>
 </resources>

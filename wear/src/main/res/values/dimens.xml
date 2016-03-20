@@ -27,4 +27,13 @@
     <dimen name="fortysomething_internal_distance">8dp</dimen>
     <dimen name="fortysomething_internal_distance_round">10dp</dimen>
 
+    <dimen name="digital_text_size">60dp</dimen>
+    <dimen name="digital_text_size_round">66dp</dimen>
+    <dimen name="digital_text_size_medium">30dp</dimen>
+    <dimen name="digital_text_size_round_medium">33dp</dimen>
+    <dimen name="digital_text_size_small">20dp</dimen>
+    <dimen name="digital_text_size_round_small">22dp</dimen>
+    <dimen name="digital_x_offset">25dp</dimen>
+    <dimen name="digital_x_offset_round">35dp</dimen>
+    <dimen name="digital_y_offset">120dp</dimen>
 </resources>
