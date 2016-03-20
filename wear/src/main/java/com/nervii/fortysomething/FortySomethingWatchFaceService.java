@@ -203,16 +203,18 @@ public class FortySomethingWatchFaceService extends WeatherWatchFaceService {
 
             // Draw H:MM in ambient mode or H:MM:SS in interactive mode.
             canvas.drawText(hour, xPos, yPos, mTextPaintHour);
-            canvas.drawText(colon, xPos + hourWidth, yPos, mTextPaintColon);
+            canvas.drawText(colon, xPos + hourWidth, yPos-10, mTextPaintColon);
             canvas.drawText(minute, xPos + hourWidth + colonWidth, yPos, mTextPaintMinute);
-            canvas.drawText(dateString, center_horizontal, (canvas.getHeight() / 2) - 45, mTextPaintDate);
+            canvas.drawText(dateString, center_horizontal, (canvas.getHeight() / 2) - 60, mTextPaintDate);
 
             long timeSpan = System.currentTimeMillis() - mWeatherInfoReceivedTime;
             if (!this.isInAmbientMode()) {
                 canvas.drawText(second, xPos + hourWidth + colonWidth + minuteWidth, (canvas.getHeight() / 2), mTextPaintSecond);
 
                 // temperature
-                if (mTemperature != Integer.MAX_VALUE && timeSpan <= WEATHER_INFO_TIME_OUT) {
+                mTemperature = 32;
+                boolean showTemperature = true; //(timeSpan <= WEATHER_INFO_TIME_OUT);
+                if (mTemperature != Integer.MAX_VALUE && showTemperature) {
                     /*
                     if ((mWeatherCondition.equals("cloudy") || mWeatherCondition.equals("clear")) && (Time.compare(mTime, mSunriseTime) < 0 || Time.compare(mTime, mSunsetTime) > 0)) {
                         //cloudy and clear have night picture
