@@ -181,9 +181,10 @@ public class FortySomethingWatchFaceService extends WeatherWatchFaceService {
                 canvas.drawText(second, xPos + hourWidth + colonWidth + minuteWidth, (canvas.getHeight() / 2), mTextPaintSecond);
 
                 // temperature
-                //mTemperature = 32;
-                //mWeatherCondition = "Rainy";
-                boolean showTemperature =(timeSpan <= WEATHER_INFO_TIME_OUT);
+                //mTemperature = 72;
+                //mWeatherCondition = "Sunny";
+                //boolean showTemperature = true; //(timeSpan <= WEATHER_INFO_TIME_OUT);
+                boolean showTemperature = (timeSpan <= WEATHER_INFO_TIME_OUT);
                 if (mTemperature != Integer.MAX_VALUE && showTemperature) {
                     /*
                     if ((mWeatherCondition.equals("cloudy") || mWeatherCondition.equals("clear")) && (Time.compare(mTime, mSunriseTime) < 0 || Time.compare(mTime, mSunsetTime) > 0)) {
