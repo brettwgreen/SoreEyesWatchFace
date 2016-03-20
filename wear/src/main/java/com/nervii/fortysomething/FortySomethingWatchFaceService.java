@@ -35,7 +35,7 @@ public class FortySomethingWatchFaceService extends WeatherWatchFaceService {
         protected float mTimeYOffset;
 
         private Engine() {
-            super("Runner");
+            super("FortySomething");
             UPDATE_RATE_MS = 1000;
         }
 
@@ -43,25 +43,25 @@ public class FortySomethingWatchFaceService extends WeatherWatchFaceService {
         public void onCreate(SurfaceHolder holder) {
             super.onCreate(holder);
 
-            mBackgroundColor = mBackgroundDefaultColor = mResources.getColor(R.color.runner_bg_color);
+            mBackgroundColor = mBackgroundDefaultColor = mResources.getColor(R.color.fortysomething_bg_color);
             mBackgroundPaint = new Paint();
             mBackgroundPaint.setColor(mBackgroundDefaultColor);
 
             mTemperatureBorderPaint = new Paint();
             mTemperatureBorderPaint.setStyle(Paint.Style.STROKE);
-            mTemperatureBorderPaint.setColor(mResources.getColor(R.color.runner_temperature_border_color));
+            mTemperatureBorderPaint.setColor(mResources.getColor(R.color.fortysomething_temperature_border_color));
             mTemperatureBorderPaint.setStrokeWidth(3f);
             mTemperatureBorderPaint.setAntiAlias(true);
 
-            Typeface timeFont = Typeface.createFromAsset(mAsserts, mResources.getString(R.string.runner_time_font));
-            Typeface dateFont = Typeface.createFromAsset(mAsserts, mResources.getString(R.string.runner_date_font));
-            Typeface tempFont = Typeface.createFromAsset(mAsserts, mResources.getString(R.string.runner_temperature_font));
+            Typeface timeFont = Typeface.createFromAsset(mAsserts, mResources.getString(R.string.fortysomething_time_font));
+            Typeface dateFont = Typeface.createFromAsset(mAsserts, mResources.getString(R.string.fortysomething_date_font));
+            Typeface tempFont = Typeface.createFromAsset(mAsserts, mResources.getString(R.string.fortysomething_temperature_font));
 
-            mTimePaint = createTextPaint(mResources.getColor(R.color.runner_time_color), timeFont);
-            mDatePaint = createTextPaint(mResources.getColor(R.color.runner_date_color), dateFont);
-            mDateSuffixPaint = createTextPaint(mResources.getColor(R.color.runner_date_color), dateFont);
-            mTemperaturePaint = createTextPaint(mResources.getColor(R.color.runner_temperature_color), tempFont);
-            mTemperatureSuffixPaint = createTextPaint(mResources.getColor(R.color.runner_temperature_color), tempFont);
+            mTimePaint = createTextPaint(mResources.getColor(R.color.fortysomething_time_color), timeFont);
+            mDatePaint = createTextPaint(mResources.getColor(R.color.fortysomething_date_color), dateFont);
+            mDateSuffixPaint = createTextPaint(mResources.getColor(R.color.fortysomething_date_color), dateFont);
+            mTemperaturePaint = createTextPaint(mResources.getColor(R.color.fortysomething_temperature_color), tempFont);
+            mTemperatureSuffixPaint = createTextPaint(mResources.getColor(R.color.fortysomething_temperature_color), tempFont);
         }
 
         @Override
@@ -72,28 +72,28 @@ public class FortySomethingWatchFaceService extends WeatherWatchFaceService {
             isRound = insets.isRound();
 
             mInternalDistance = mResources.getDimension(isRound ?
-                    R.dimen.runner_internal_distance_round : R.dimen.runner_internal_distance);
+                    R.dimen.fortysomething_internal_distance_round : R.dimen.fortysomething_internal_distance);
 
             mTimeXOffset = mResources.getInteger(isRound ?
-                    R.integer.runner_time_xoffset_round : R.integer.runner_time_xoffset);
+                    R.integer.fortysomething_time_xoffset_round : R.integer.fortysomething_time_xoffset);
 
             mTimeYOffset = mResources.getInteger(isRound ?
-                    R.integer.runner_time_yoffset_round : R.integer.runner_time_yoffset);
+                    R.integer.fortysomething_time_yoffset_round : R.integer.fortysomething_time_yoffset);
 
             float timeTextSize = mResources.getDimension(isRound ?
-                    R.dimen.runner_time_size_round : R.dimen.runner_time_size);
+                    R.dimen.fortysomething_time_size_round : R.dimen.fortysomething_time_size);
 
             float dateTextSize = mResources.getDimension(isRound ?
-                    R.dimen.runner_date_size_round : R.dimen.runner_date_size);
+                    R.dimen.fortysomething_date_size_round : R.dimen.fortysomething_date_size);
 
             float dateSuffixTextSize = mResources.getDimension(isRound ?
-                    R.dimen.runner_date_suffix_size_round : R.dimen.runner_date_suffix_size);
+                    R.dimen.fortysomething_date_suffix_size_round : R.dimen.fortysomething_date_suffix_size);
 
             float tempTextSize = mResources.getDimension(isRound ?
-                    R.dimen.runner_temperature_size_round : R.dimen.runner_temperature_size);
+                    R.dimen.fortysomething_temperature_size_round : R.dimen.fortysomething_temperature_size);
 
             float tempSuffixTextSize = mResources.getDimension(isRound ?
-                    R.dimen.runner_temperature_suffix_size_round : R.dimen.runner_temperature_suffix_size);
+                    R.dimen.fortysomething_temperature_suffix_size_round : R.dimen.fortysomething_temperature_suffix_size);
 
             mTimePaint.setTextSize(timeTextSize);
             mDatePaint.setTextSize(dateTextSize);
@@ -139,7 +139,7 @@ public class FortySomethingWatchFaceService extends WeatherWatchFaceService {
         protected void fetchConfig(DataMap config) {
             super.fetchConfig(config);
             if (config.containsKey(Consts.KEY_CONFIG_THEME)) {
-                mBackgroundColor = mResources.getColor(mResources.getIdentifier("runner_theme_" + mTheme + "_bg", "color", Consts.PACKAGE_NAME));
+                mBackgroundColor = mResources.getColor(mResources.getIdentifier("fortysomething_theme_" + mTheme + "_bg", "color", Consts.PACKAGE_NAME));
                 if (!isInAmbientMode()) {
                     mBackgroundPaint.setColor(mBackgroundColor);
                 }
